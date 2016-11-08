@@ -36,21 +36,6 @@ module Devise
   mattr_accessor :mailchimp_api_key
   @@mailchimp_api_key = 'your_api_key'
 
-  # Public: Require double opt-in
-  # Requires user to click a link in a confirmation email to be added to the mailing list.  Defaults
-  # to false.
-  #
-  #   Devise.double_opt_in = false
-  mattr_accessor :double_opt_in
-  @@double_opt_in = false
-
-  # Public: Send welcome email
-  # Sends the final 'Welcome Email'. Defaults to false.
-  #
-  #   Devise.send_welcome_email = false
-  mattr_accessor :send_welcome_email
-  @@send_welcome_email = false  
-
 end
 
 Devise.add_module :mailchimp, :model => 'devise_mailchimp/model'

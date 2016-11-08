@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Justin Cunningham"]
   s.email       = ["justin@compucatedsolutions.com"]
   s.homepage    = "http://jcnnghm.github.com/devise_mailchimp/"
-  s.summary     = %q{Easy MailChimp integration for Devise}
+  s.summary     = %q{Easy MailChimpV3 integration for Devise}
   s.description = %q{Devise MailChimp adds a MailChimp option to devise that easily enables users to join your mailing list when they create an account.}
 
   s.rubyforge_project = "devise_mailchimp"
@@ -19,9 +19,9 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   {
-    'rails'  => '>= 3.0.0',
-    'devise' => '>= 1.4.8',
-    'hominid-wout' => '~> 3.0.6'
+    'rails'  => '>= 4.2.0',
+    'devise' => '>= 3.4.1',
+    'mailchimp_api_v3' => '~> 0.2.1'
   }.each do |lib, version|
     s.add_runtime_dependency(lib, *version)
   end

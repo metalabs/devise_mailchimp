@@ -3,15 +3,14 @@
 Devise MailChimp adds a MailChimp option to {devise}[https://github.com/plataformatec/devise] that easily enables users
 to join your mailing list when they create an account.
 
-{Delayed Job}[https://github.com/collectiveidea/delayed_job] is used automatically if your project uses it, and the
-mapping between list names and list ids is cached automatically.
+{Delayed Job}[https://github.com/collectiveidea/delayed_job] is used automatically if your project uses it.
 
 == Getting started
 
 In your Gemfile, add devise_mailchimp after devise:
 
   gem "devise"
-  gem "devise_mailchimp"  # Last officially released gem
+  gem 'devise_mailchimp', github: 'metalabs/devise_mailchimp'
 
 In your User model, add :mailchimp to the devise call and make :join_mailing_list accessible:
 
@@ -22,8 +21,6 @@ In your devise initializer (config/initializers/devise.rb), set your API key and
 
   Devise.mailchimp_api_key = 'your_api_key'
   Devise.mailing_list_name = 'List Name'
-  Devise.double_opt_in = false  
-  Devise.send_welcome_email = false  
 
 If you are using the default Devise registration views, the Join Mailing List checkbox is added automatically, if not,
 either include the form partial in your new registration form:
@@ -50,21 +47,9 @@ go to the Lists tab, then hit create list.
 
   Devise.mailing_list_name = 'List Name'
 
-Add options from the {MailChimp API Docs}[http://apidocs.mailchimp.com/api/1.3/] using the following code in user.rb model. For GROUPINGS, you can get the Group ID by clicking "import to" and looking at the URL https://us6.admin.mailchimp.com/lists/members/import?id=1234&grp=9999&int=1
-
   def mailchimp_list_subscribe_options
-    {'FNAME' => self.first_name, 'LNAME' => self.last_name, 'GROUPINGS'=> { 0 => {'id' => 9999, 'groups' => "Signed Up" } } }
+    {'FNAME' => self.first_name, 'LNAME' => self.last_name}
   end
-
-For all the configuration settings, take a look at the {model documenation}[http://rubydoc.info/github/jcnnghm/devise_mailchimp/master/Devise/Models/Mailchimp#].
-
-== Documentation
-
-Full documentation is available at {rdoc.info}[http://rdoc.info/github/jcnnghm/devise_mailchimp/master/frames].
-
-== Demo Application
-
-A demo application is available at {github}[https://github.com/jcnnghm/devise_mailchimp_demo].
 
 == Example Usage
 
@@ -100,4 +85,4 @@ View our {contributors}[https://github.com/jcnnghm/devise_mailchimp/contributors
 
 == Copyright
 
-Copyright (c) 2011 {Justin Cunningham}[http://littlebitofcode.com]. See MIT_LICENSE for details.
+See MIT_LICENSE for details.

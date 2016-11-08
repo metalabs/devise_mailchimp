@@ -18,11 +18,6 @@ module Devise
     #                      account tab in your MailChimp account and select API Keys & Authorized Apps, then add
     #                      a key.  This defaults to 'your_api_key'
     #
-    #   double_opt_in: Requires that users must click a link in a confirmation email to be added to your mailing list.
-    #                  Defaults to false.
-    #
-    #   send_welcome_email: Whether or not the user will get a final Welcome email    
-    #
     # Examples:
     #
     #   User.find(1).add_to_mailchimp_list('Site Administrators List')
@@ -64,7 +59,14 @@ module Devise
       def add_to_mailchimp_list(list_name)
         mapper = mailchimp_list_mapper.respond_to?(:delay) ? mailchimp_list_mapper.delay : mailchimp_list_mapper
         options = self.respond_to?(:mailchimp_list_subscribe_options) ? mailchimp_list_subscribe_options : {}
-        mapper.subscribe_to_lists(list_name, self.email, options)        
+        mapper.subscribe_to_lists(list_name, self.email, options, self.language)        
+      end
+
+      # Update the user to the mailchimp list with the specified name
+      def update_to_mailchimp_list(list_name)
+        mapper = mailchimp_list_mapper.respond_to?(:delay) ? mailchimp_list_mapper.delay : mailchimp_list_mapper
+        options = self.respond_to?(:mailchimp_list_subscribe_options) ? mailchimp_list_subscribe_options : {}
+        mapper.update_to_lists_if_member_already_exist(list_name, self.email, options, self.language)        
       end
 
       # remove the user from the mailchimp list with the specified name
@@ -80,15 +82,13 @@ module Devise
 
       # mapper that helps convert list names to mailchimp ids
       def mailchimp_list_mapper
-        @@mailchimp_list_mapper ||= MailchimpListApiMapper.new(self.class.mailchimp_api_key, self.class.double_opt_in, self.class.send_welcome_email)
+        @@mailchimp_list_mapper ||= MailchimpListApiMapper.new(self.class.mailchimp_api_key)
       end
 
       module ClassMethods
         Devise::Models.config(self, :mailchimp_api_key)
         Devise::Models.config(self, :mailing_list_name)
         Devise::Models.config(self, :mailing_list_opt_in_by_default)
-        Devise::Models.config(self, :double_opt_in)
-        Devise::Models.config(self, :send_welcome_email)
       end
     end
   end
