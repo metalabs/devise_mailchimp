@@ -59,14 +59,14 @@ module Devise
       def add_to_mailchimp_list(list_name)
         mapper = mailchimp_list_mapper.respond_to?(:delay) ? mailchimp_list_mapper.delay : mailchimp_list_mapper
         options = self.respond_to?(:mailchimp_list_subscribe_options) ? mailchimp_list_subscribe_options : {}
-        mapper.subscribe_to_lists(list_name, self.email, options, self.language)        
+        mapper.subscribe_to_lists(list_name, self.email, options, self.language, self.latitude, self.longitude)        
       end
 
       # Update the user to the mailchimp list with the specified name
       def update_to_mailchimp_list(list_name)
         mapper = mailchimp_list_mapper.respond_to?(:delay) ? mailchimp_list_mapper.delay : mailchimp_list_mapper
         options = self.respond_to?(:mailchimp_list_subscribe_options) ? mailchimp_list_subscribe_options : {}
-        mapper.update_to_lists_if_member_already_exist(list_name, self.email, options, self.language)        
+        mapper.update_to_lists_if_member_already_exist(list_name, self.email, options, self.language, self.latitude, self.longitude)        
       end
 
       # remove the user from the mailchimp list with the specified name

@@ -22,7 +22,7 @@ module Devise
         # several.
         #
         # NOTE: Do not use this method unless the user has opted in.
-        def subscribe_to_lists(list_names, email, options, language = "en-GB")
+        def subscribe_to_lists(list_names, email, options, language = "en-GB", latitude = nil, longitude = nil)
           list_names = [list_names] unless list_names.is_a?(Array)
           list_names.each do |list_name|
             list = name_to_list(list_name)
@@ -31,7 +31,8 @@ module Devise
               status: "subscribed",
               language: language[0,2],
               merge_fields: options,
-              interests: {language_to_interest_id(language, list) => true}
+              interests: {language_to_interest_id(language, list) => true},
+              location: {latitude: latitude, longitude: longitude}
             )
           end
         end
@@ -39,7 +40,7 @@ module Devise
         # updates the user to the named mailing list(s).  list_names can be the name of one list, or an array of
         # several.
         #
-        def update_to_lists_if_member_already_exist(list_names, email, options, language = "en-GB")
+        def update_to_lists_if_member_already_exist(list_names, email, options, language = "en-GB", latitude = nil, longitude = nil)
           list_names = [list_names] unless list_names.is_a?(Array)
           list_names.each do |list_name|
             list = name_to_list(list_name)
@@ -48,7 +49,8 @@ module Devise
               member.update(
                 language: language[0,2],
                 merge_fields: options,
-                interests: {language_to_interest_id(language, list) => true}
+                interests: {language_to_interest_id(language, list) => true},
+                location: {latitude: latitude, longitude: longitude}
               )
             end
           end
