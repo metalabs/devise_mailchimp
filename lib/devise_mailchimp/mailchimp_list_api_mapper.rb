@@ -45,7 +45,7 @@ module Devise
           list_names.each do |list_name|
             list = name_to_list(list_name)
             member = list.members(email)
-            if member.present? 
+            if member.present? && member.status == "subscribed"
               member.update(
                 language: language[0,2],
                 merge_fields: options,
