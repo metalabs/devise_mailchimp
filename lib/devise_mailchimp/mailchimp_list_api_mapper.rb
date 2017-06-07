@@ -26,14 +26,24 @@ module Devise
           list_names = [list_names] unless list_names.is_a?(Array)
           list_names.each do |list_name|
             list = name_to_list(list_name)
-            list.members.create(
-              email_address: email,
-              status: "subscribed",
-              language: language[0,2],
-              merge_fields: options,
-              interests: {language_to_interest_id(language, list) => true},
-              location: {latitude: latitude, longitude: longitude}
-            )
+            member = list.members(email)
+            if member.present? && member.status == "subscribed"
+              member.update(
+                language: language[0,2],
+                merge_fields: options,
+                interests: {language_to_interest_id(language, list) => true},
+                location: {latitude: latitude, longitude: longitude}
+              )
+            else
+              list.members.create(
+                email_address: email,
+                status: "subscribed",
+                language: language[0,2],
+                merge_fields: options,
+                interests: {language_to_interest_id(language, list) => true},
+                location: {latitude: latitude, longitude: longitude}
+              )
+            end
           end
         end
 
