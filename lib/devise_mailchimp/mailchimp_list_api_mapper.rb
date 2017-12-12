@@ -27,13 +27,15 @@ module Devise
           list_names.each do |list_name|
             list = name_to_list(list_name)
             member = list.members(email)
-            if member.present? && member.status == "subscribed"
-              member.update(
-                language: language[0,2],
-                merge_fields: options,
-                interests: {language_to_interest_id(language, list) => true},
-                location: {latitude: latitude, longitude: longitude}
-              )
+            if member.present? 
+              if member.status == "subscribed"
+                member.update(
+                  language: language[0,2],
+                  merge_fields: options,
+                  interests: {language_to_interest_id(language, list) => true},
+                  location: {latitude: latitude, longitude: longitude}
+                )
+              end
             else
               list.members.create(
                 email_address: email,
